@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Todoアプリ REST API
 
-## Getting Started
+このAPIはTodoアプリのバックエンド機能を提供します。
 
-First, run the development server:
+## REST API
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+以下は、REST APIのエンドポイントとリクエスト・レスポンスの仕様です。
+
+### Todoリストの取得
+
+- **エンドポイント:** `/api/todolists`
+- **メソッド:** GET
+- **リクエスト:** なし
+- **レスポンス:**
+
+```json
+[
+    {
+        "id": 1,
+        "name": "買い物リスト",
+        "user_id": 123
+    },
+    {
+        "id": 2,
+        "name": "プロジェクトA",
+        "user_id": 123
+    }
+]
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 新しいTodoリストの作成
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **エンドポイント:** `/api/todolists`
+- **メソッド:** POST
+- **リクエスト:**
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```json
+{
+    "name": "新しいリスト",
+    "user_id": 123
+}
+```
 
-## Learn More
+- **レスポンス:**
 
-To learn more about Next.js, take a look at the following resources:
+```json
+{
+    "id": 3,
+    "name": "新しいリスト",
+    "user_id": 123
+}
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### TodoList
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Todoリストを表します。
 
-## Deploy on Vercel
+#### テーブル設計
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| カラム名     | データ型    | 説明             |
+|--------------|-------------|------------------|
+| id           | INT         | TodoリストのID   |
+| name         | VARCHAR     | Todoリストの名前 |
+| user_id      | INT         | ユーザーのID     |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Todo
+
+- Todo項目を表します。
+
+#### テーブル設計
+
+| カラム名       | データ型    | 説明             |
+|----------------|-------------|------------------|
+| id             | INT         | TodoのID         |
+| title          | VARCHAR     | Todoのタイトル   |
+| description    | TEXT        | Todoの説明       |
+| due_date       | DATE        | Todoの締切日     |
+| list_id        | INT         | Todoが所属するリストのID |
+
+### TodoProject
+
+- Todoプロジェクトを表します。
+
+#### テーブル設計
+
+| カラム名     | データ型    | 説明                 |
+|--------------|-------------|----------------------|
+| id           | INT         | TodoプロジェクトのID |
+| name         | VARCHAR     | Todoプロジェクトの名前 |
+| user_id      | INT         | ユーザーのID         |
+
+### TodoLabel
+
+- Todoラベルを表します。
+
+#### テーブル設計
+
+| カラム名     | データ型    | 説明                 |
+|--------------|-------------|----------------------|
+| id           | INT         | TodoラベルのID       |
+| name         | VARCHAR     | Todoラベルの名前     |
+| todo_id      | INT         | TodoのID             |
+
+### User
+
+- ユーザーを表します。
+
+#### テーブル設計
+
+| カラム名     | データ型    | 説明                 |
+|--------------|-------------|----------------------|
+| id           | INT         | ユーザーのID         |
+| username     | VARCHAR     | ユーザー名           |
+| email        | VARCHAR     | ユーザーのメールアドレス |
+| password     | VARCHAR     | ユーザーのパスワード     |
