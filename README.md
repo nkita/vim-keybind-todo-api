@@ -18,17 +18,17 @@
     {
         "id": 1,
         "name": "買い物リスト",
-        "user_id": 123
+        "created_at": 1716378457
     },
     {
         "id": 2,
         "name": "プロジェクトA",
-        "user_id": 123
+        "created_at":1716378457 
     }
 ]
 ```
 
-### 新しいTodoリストの作成
+### Todoリストの作成
 
 - **エンドポイント:** `/api/list`
 - **メソッド:** POST
@@ -37,19 +37,10 @@
 ```json
 {
     "name": "新しいリスト",
-    "user_id": 123
 }
 ```
 
-- **レスポンス:**
-
-```json
-{
-    "id": 3,
-    "name": "新しいリスト",
-    "user_id": 123
-}
-```
+- **レスポンス:**  なし
 
 ### Todoの取得
 
@@ -62,9 +53,22 @@
 [
     {
         "id": 1,
-        "name": "買い物リスト",
-        "user_id": 123
+        "isCompletion": true,
+        "priority": "a",
+        "creationDate":"yyyy-mm-dd",
+        "text":"洗剤",
+        "project":"プライベート",
+        "context":"買い物"
     },
+   {
+        "id": 2,
+        "isCompletion": true,
+        "priority": "a",
+        "creationDate":"yyyy-mm-dd",
+        "text":"お昼ご飯",
+        "project":"プライベート",
+        "context":"買い物"
+    }
 ]
 ```
 
@@ -76,11 +80,14 @@
 
 ```json
 [
-    {
-        "id": 1,
-        "name": "買い物リスト",
-        "user_id": 123
-    },
+   {
+        "isCompletion": true,
+        "priority": "a",
+        "creationDate":"yyyy-mm-dd",
+        "text":"お昼ご飯",
+        "project":"プライベート",
+        "context":"買い物"
+    }
 ]
 ```
 
@@ -93,11 +100,16 @@
 
 ```json
 [
-    {
-        "id": 1,
-        "name": "買い物リスト",
-        "user_id": 123
-    },
+   {
+        "id": 2,
+        "isCompletion": true,
+        "priority": "a",
+        "creationDate":"yyyy-mm-dd",
+        "text":"お昼ご飯",
+        "project":"プライベート",
+        "context":"買い物",
+        "detail":"時間が空いたときに買う"
+    }
 ]
 ```
 
@@ -109,16 +121,20 @@
 
 ```json
 [
-    {
-        "id": 1,
-        "name": "買い物リスト",
-        "user_id": 123
-    },
+   {
+        "id": 2,
+        "isCompletion": true,
+        "priority": "a",
+        "creationDate":"yyyy-mm-dd",
+        "text":"お昼ご飯",
+        "project":"プライベート",
+        "context":"買い物",
+        "detail":"時間が空いたときに買う"
+    }
 ]
 ```
 
 - **レスポンス:**
-
 
 ### TodoList
 
