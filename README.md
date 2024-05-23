@@ -136,65 +136,55 @@
 
 - **レスポンス:**
 
+## テーブル設計
+
 ### TodoList
-
-- Todoリストを表します。
-
-#### テーブル設計
 
 | カラム名     | データ型    | 説明             |
 |--------------|-------------|------------------|
-| id           | INT         | TodoリストのID   |
-| name         | VARCHAR     | Todoリストの名前 |
-| user_id      | INT         | ユーザーのID     |
+| id           | VARCHAR    | TodoリストのID   |
+| name         | VARCHAR    | Todoリストの名前 |
+| created_at | INT | 作成日    |
+| updated_at | INT | 作成日    |
 
 ### Todo
 
-- Todo項目を表します。
-
-#### テーブル設計
-
-| カラム名       | データ型    | 説明             |
-|----------------|-------------|------------------|
-| id             | INT         | TodoのID         |
-| title          | VARCHAR     | Todoのタイトル   |
-| description    | TEXT        | Todoの説明       |
-| due_date       | DATE        | Todoの締切日     |
-| list_id        | INT         | Todoが所属するリストのID |
+| カラム名        | データ型      | 説明            |
+|----------------|-------------|-----------------|
+| id             | VARCHAR     | TodoのID        |
+| is_complete     | BOOLEAN     | Todoのタイトル   |
+| priority       | VARCHAR     ||
+| created_at      | DateTime    | 作成日|
+| updated_at      | DateTime    | 更新日|
+| completedAt    | DateTime    | 更新日|
+| text           | VARCHAR     ||
+| detail         | VARCHAR     | Todoの締切日     |
+| projct_id      | VARCHAR     | fk|
+| context_id     | VARCHAR     | fk |
+| list_id        | VARCHAR     | fk Todoが所属するリストのID |
 
 ### TodoProject
 
-- Todoプロジェクトを表します。
-
-#### テーブル設計
-
 | カラム名     | データ型    | 説明                 |
 |--------------|-------------|----------------------|
-| id           | INT         | TodoプロジェクトのID |
+| id           | VARCHAR | TodoプロジェクトのID |
 | name         | VARCHAR     | Todoプロジェクトの名前 |
-| user_id      | INT         | ユーザーのID         |
+| todo_id      | VARCHAR | fk  TodoのID|
 
 ### TodoLabel
-
-- Todoラベルを表します。
-
-#### テーブル設計
 
 | カラム名     | データ型    | 説明                 |
 |--------------|-------------|----------------------|
 | id           | INT         | TodoラベルのID       |
 | name         | VARCHAR     | Todoラベルの名前     |
-| todo_id      | INT         | TodoのID             |
+| todo_id      | VARCHAR     | fk TodoのID             |
 
 ### User
 
 - ユーザーを表します。
-
-#### テーブル設計
 
 | カラム名     | データ型    | 説明                 |
 |--------------|-------------|----------------------|
 | id           | INT         | ユーザーのID         |
 | username     | VARCHAR     | ユーザー名           |
 | email        | VARCHAR     | ユーザーのメールアドレス |
-| password     | VARCHAR     | ユーザーのパスワード     |
