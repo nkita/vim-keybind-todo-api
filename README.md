@@ -146,6 +146,7 @@
 | name         | VARCHAR    | Todoリストの名前 |
 | created_at | INT | 作成日    |
 | updated_at | INT | 作成日    |
+| user_id    | VARCHAR | fk ユーザーID|
 
 ### Todo
 
@@ -162,6 +163,7 @@
 | projct_id      | VARCHAR     | fk|
 | context_id     | VARCHAR     | fk |
 | list_id        | VARCHAR     | fk Todoが所属するリストのID |
+| user_id    | VARCHAR | fk ユーザーID|
 
 ### TodoProject
 
@@ -170,6 +172,7 @@
 | id           | VARCHAR | TodoプロジェクトのID |
 | name         | VARCHAR     | Todoプロジェクトの名前 |
 | todo_id      | VARCHAR | fk  TodoのID|
+| user_id    | VARCHAR | fk ユーザーID|
 
 ### TodoLabel
 
@@ -178,6 +181,7 @@
 | id           | INT         | TodoラベルのID       |
 | name         | VARCHAR     | Todoラベルの名前     |
 | todo_id      | VARCHAR     | fk TodoのID             |
+| user_id    | VARCHAR | fk ユーザーID|
 
 ### User
 
@@ -185,6 +189,5 @@
 
 | カラム名     | データ型    | 説明                 |
 |--------------|-------------|----------------------|
-| id           | INT         | ユーザーのID         |
-| username     | VARCHAR     | ユーザー名           |
-| email        | VARCHAR     | ユーザーのメールアドレス |
+| id           | VARCHAR     | ユーザーのID         |
+| name         | VARCHAR     | ユーザー名           |
