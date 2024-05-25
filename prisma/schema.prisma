@@ -14,10 +14,10 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+  id        String     @id @default(autoincrement())
+  email     String     @unique
+  name      String?
+  todo_list TodoList[]
 }
 
 model Post {
@@ -27,4 +27,13 @@ model Post {
   published Boolean @default(false)
   author    User    @relation(fields: [authorId], references: [id])
   authorId  Int
+}
+
+model TodoList {
+  id         String @id
+  name       String
+  created_at Int
+  updated_at Int
+  user_id    String
+  user       User   @relation(fields: [user_id], references: [id])
 }
