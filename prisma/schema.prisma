@@ -14,26 +14,35 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(autoincrement())
-  email     String     @unique
+  id        String    @id
+  email     String    @unique
   name      String?
-  todo_list TodoList[]
-}
-
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+  todo_list TodoList?
 }
 
 model TodoList {
-  id         String @id
+  id         String   @id
   name       String
-  created_at Int
-  updated_at Int
-  user_id    String
-  user       User   @relation(fields: [user_id], references: [id])
+  created_at DateTime
+  updated_at DateTime
+  Todo       Todo[]
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @unique
+}
+
+model Todo {
+  id           String    @id
+  is_complete  Boolean
+  priority     String
+  created_at   DateTime
+  updated_at   DateTime
+  completedAt  DateTime
+  text         String
+  detail       String
+  project_id   String
+  context_id   String
+  list_id      String
+  user_id      String
+  todo_list    TodoList? @relation(fields: [todo_list_id], references: [id])
+  todo_list_id String?
 }
