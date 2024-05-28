@@ -46,3 +46,13 @@ model Todo {
   todo_list    TodoList? @relation(fields: [todo_list_id], references: [id])
   todo_list_id String?
 }
+
+model TodoProject {
+  id   String @id
+  name String
+}
+
+model TodoLabel {
+  id   String @id
+  name String
+}

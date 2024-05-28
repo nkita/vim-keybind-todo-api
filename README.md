@@ -171,8 +171,6 @@
 |--------------|-------------|----------------------|
 | id           | VARCHAR | TodoプロジェクトのID |
 | name         | VARCHAR     | Todoプロジェクトの名前 |
-| todo_id      | VARCHAR | fk  TodoのID|
-| user_id    | VARCHAR | fk ユーザーID|
 
 ### TodoLabel
 
@@ -180,8 +178,6 @@
 |--------------|-------------|----------------------|
 | id           | INT         | TodoラベルのID       |
 | name         | VARCHAR     | Todoラベルの名前     |
-| todo_id      | VARCHAR     | fk TodoのID             |
-| user_id    | VARCHAR | fk ユーザーID|
 
 ### User
 
