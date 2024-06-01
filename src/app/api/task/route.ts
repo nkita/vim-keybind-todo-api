@@ -3,9 +3,15 @@ import { select } from '@/db/user'
 import { getSession } from '@auth0/nextjs-auth0';
 
 export const GET = async () => {
-    const { user } = await getSession();
+    const session = await getSession();
     // const user = await select({})
-    return responseJson(200, user)
+    if (session?.user) {
+        const id = session.user.sub
+
+        return responseJson(200,)
+    } else {
+        return responseJson(400)
+    }
 }
 export const POST = async () => responseJson(405)
 
