@@ -1,17 +1,15 @@
 import { responseJson } from '@/lib/response'
-import { select } from '@/db/user'
-import { getSession } from '@auth0/nextjs-auth0';
+import { getUserID } from '@/lib/session';
+import { select } from '@/db/todo';
 
 export const GET = async () => {
-    const session = await getSession();
-    // const user = await select({})
-    if (session?.user) {
-        const id = session.user.sub
+    const id = await getUserID()
+    if (!id) return responseJson(404)
 
-        return responseJson(200,)
-    } else {
-        return responseJson(400)
-    }
+    const data = await select({ id: id })
+
+    return responseJson(200, data)
 }
+
 export const POST = async () => responseJson(405)
 
