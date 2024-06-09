@@ -22,6 +22,7 @@ model User {
 
 model TodoList {
   id         String   @id
+  name       String
   created_at DateTime
   updated_at DateTime
   Todo       Todo[]
@@ -31,7 +32,6 @@ model TodoList {
 
 model Todo {
   id           String    @id
-  name         String
   is_complete  Boolean
   priority     String
   created_at   DateTime

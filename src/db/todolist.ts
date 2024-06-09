@@ -14,6 +14,7 @@ export const create = async (
 ) => await prisma.todoList.create({
     data: {
         id: randomUUID(),
+        name: name,
         created_at: new Date(),
         updated_at: new Date(),
         userId: user_id,
@@ -37,4 +38,3 @@ export const update = async (
         updated_at: new Date(),
     }
 })
-
