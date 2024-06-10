@@ -32,16 +32,15 @@ model TodoList {
 
 model Todo {
   id           String    @id
-  is_complete  Boolean
-  priority     String
+  is_complete  Boolean?
+  priority     String?
   created_at   DateTime
   updated_at   DateTime
-  completedAt  DateTime
+  completedAt  DateTime?
   text         String
   detail       String
-  project_id   String
-  context_id   String
-  list_id      String
+  project_id   String?
+  context_id   String?
   user_id      String
   todo_list    TodoList? @relation(fields: [todo_list_id], references: [id])
   todo_list_id String?
