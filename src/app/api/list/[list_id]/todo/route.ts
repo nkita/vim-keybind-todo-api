@@ -18,20 +18,21 @@ export const POST = async (request: Request, { params }: { params: any }) => {
 
     if (!isUUID(params.list_id)) return responseJson(422)
 
+    const res = {
+        id: randomUUID(),
+        created_at: new Date().toString(),
+        text: todo.text ?? "",
+        detail: todo.detail ?? "",
+        project_id: todo.project_id ?? "",
+        todo_list_id: params.list_id,
+        user_id: "1"
+    }
     try {
-        await upsert({
-            id: randomUUID(),
-            created_at: new Date().toString(),
-            text: todo.text ?? "",
-            detail: todo.detail ?? "",
-            project_id: todo.project_id ?? "",
-            todo_list_id: params.list_id,
-            user_id: "1"
-        })
+        await upsert(res)
     } catch (e) {
         console.error(e)
         return responseJson(500, "System error")
     }
 
-    return responseJson(200, todo)
+    return responseJson(200, res)
 }

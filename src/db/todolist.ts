@@ -9,11 +9,12 @@ export const select = async (where: any) => {
  * TodoList作成
  */
 export const create = async (
+    id: string,
     name: string,
     user_id: string
 ) => await prisma.todoList.create({
     data: {
-        id: randomUUID(),
+        id: id,
         name: name,
         created_at: new Date(),
         updated_at: new Date(),
