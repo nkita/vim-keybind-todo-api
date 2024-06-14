@@ -18,7 +18,7 @@ export const create = async (
         name: name,
         created_at: new Date(),
         updated_at: new Date(),
-        userId: user_id,
+        user_id: user_id
     }
 })
 
@@ -32,7 +32,7 @@ export const update = async (
 ) => await prisma.todoList.update({
     where: {
         id: id,
-        userId: user_id
+        user_id: user_id
     },
     data: {
         name: name,
