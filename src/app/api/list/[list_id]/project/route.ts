@@ -5,8 +5,8 @@ import { select, upsert } from '@/db/todoproject';
 import { isUUID } from '@/lib/util';
 
 export const GET = async () => {
-    // const id = await getUserID()
-    // if (!id) return responseJson(404)
+    const id = await getUserID()
+    if (!id) return responseJson(404)
 
     const data = await select({ user_id: "1" })
 
@@ -18,8 +18,8 @@ export const POST = async (request: Request, { params }: { params: any }) => {
      * 認証機能 
      */
     try {
-        // const id = await getUserID()
-        // if (!id) return responseJson(404)
+        const id = await getUserID()
+        if (!id) return responseJson(404)
         let todo: { name: string }
         todo = await request.json()
 

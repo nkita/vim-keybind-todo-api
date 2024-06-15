@@ -17,8 +17,8 @@ export const POST = async (request: Request) => {
     /**
      * 認証機能 
      */
-    // const id = await getUserID()
-    // if (!id) return responseJson(404)
+    const id = await getUserID()
+    if (!id) return responseJson(404)
     let list: ListProps
     list = await request.json()
 
