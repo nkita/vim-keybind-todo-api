@@ -6,7 +6,7 @@ import { randomUUID } from 'crypto';
 
 export const GET = async () => {
     const id = await getUserID()
-    if (!id) return responseJson(404)
+    if (!id) return responseJson(404, id)
 
     const data = await select({ user_id: id })
 
