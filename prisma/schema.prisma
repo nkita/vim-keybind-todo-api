@@ -14,9 +14,8 @@ datasource db {
 }
 
 model User {
-  id          String        @id
-  email       String        @unique
-  name        String?
+  id    String  @id
+  name  String?
 }
 
 model TodoList {
@@ -25,7 +24,7 @@ model TodoList {
   created_at  DateTime
   updated_at  DateTime
   Todo        Todo[]
-  user_id     String        @unique
+  user_id     String
   TodoProject TodoProject[]
   TodoLabel   TodoLabel[]
 }

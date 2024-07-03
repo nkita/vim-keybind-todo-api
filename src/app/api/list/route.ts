@@ -19,19 +19,18 @@ export const POST = async (request: Request) => {
      */
     const id = await getUserID()
     if (!id) return responseJson(404)
-    let list: ListProps
-    list = await request.json()
-
-    const res = {
-        id: randomUUID(),
-        name: list.name
-    }
     try {
-        await create(res.id, res.name, '1')
+        let list: ListProps
+        list = await request.json()
+
+        const res = {
+            id: randomUUID(),
+            name: list.name
+        }
+        await create(res.id, res.name, id)
+        return responseJson(200, res)
     } catch (e) {
         console.error(e)
         return responseJson(500, "System error")
     }
-
-    return responseJson(200, res)
 }
