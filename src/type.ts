@@ -3,11 +3,11 @@ export interface TodoProps {
     is_complete?: boolean
     priority?: string    // a character. A-Z Uppercase
     completionDate?: string    // format yyyy-mm-dd
-    created_at: string    // format yyyy-mm-dd
+    creationDate?: string    // format yyyy-mm-dd
     text: string
     detail: string
-    project_id?: string    // +projctname
-    context_id?: string    // @context    
+    project?: string    // +projctname
+    context?: string    // @context    
 }
 
 export type Sort = "text" | "priority" | "context" | "creationDate" | "isCompletion" | undefined

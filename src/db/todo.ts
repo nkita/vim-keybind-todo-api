@@ -1,5 +1,4 @@
 import prisma, { Todo } from "@/db/prisma";
-import { randomUUID } from "crypto";
 import { TodoProps } from "@/type";
 
 export const select = async (where: any) => await prisma.todo.findMany({ where: where })
@@ -16,11 +15,11 @@ export const upsert = async ({
     is_complete = false,
     priority = "",
     completionDate,
-    created_at,
+    creationDate,
     text,
     detail,
-    project_id,
-    context_id,
+    project,
+    context,
     user_id,
     todo_list_id
 }: TodoDBProps) => await prisma.todo.upsert({
@@ -33,12 +32,12 @@ export const upsert = async ({
         is_complete: is_complete,
         priority: priority,
         updated_at: new Date(),
-        created_at: new Date(created_at),  // created_atをDate型に変換
+        creationDate: creationDate ?? new Date(),  // created_atをDate型に変換
         completedAt: null,  // created_atをDate型に変換
         text: text,
         detail: detail ?? "",
-        project_id: project_id ?? "",
-        context_id: context_id ?? "",
+        project: project ?? "",
+        context: context ?? "",
         todo_list_id: todo_list_id,
         user_id: user_id,
     },
@@ -48,8 +47,8 @@ export const upsert = async ({
         priority: priority,
         text: text,
         detail: detail ?? "",
-        project_id: project_id ?? "",
-        context_id: context_id ?? "",
+        project: project ?? "",
+        context: context ?? "",
         completedAt: completionDate ? new Date(completionDate) : null  // completionDateをDate型に変換
     }
 })

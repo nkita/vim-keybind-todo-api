@@ -14,49 +14,31 @@ datasource db {
 }
 
 model User {
-  id    String  @id
-  name  String?
+  id   String  @id
+  name String?
 }
 
 model TodoList {
-  id          String        @id
-  name        String
-  created_at  DateTime
-  updated_at  DateTime
-  Todo        Todo[]
-  user_id     String
-  TodoProject TodoProject[]
-  TodoLabel   TodoLabel[]
+  id         String   @id
+  name       String
+  created_at DateTime
+  updated_at DateTime
+  Todo       Todo[]
+  user_id    String
 }
 
 model Todo {
   id           String    @id
   is_complete  Boolean?
   priority     String?
-  created_at   DateTime
+  creationDate DateTime
   updated_at   DateTime
   completedAt  DateTime?
   text         String
   detail       String
-  project_id   String?
-  context_id   String?
+  project      String
+  context      String
   user_id      String
   todo_list    TodoList? @relation(fields: [todo_list_id], references: [id])
   todo_list_id String?
-}
-
-model TodoProject {
-  id           String    @id
-  name         String
-  todo_list    TodoList? @relation(fields: [todo_list_id], references: [id])
-  todo_list_id String?
-  user_id      String
-}
-
-model TodoLabel {
-  id           String    @id
-  name         String
-  todo_list    TodoList? @relation(fields: [todo_list_id], references: [id])
-  todo_list_id String?
-  user_id      String
 }
