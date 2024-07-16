@@ -41,4 +41,5 @@ model Todo {
   user_id      String
   todo_list    TodoList? @relation(fields: [todo_list_id], references: [id])
   todo_list_id String?
+  isArchived   Boolean   @default(false)
 }
