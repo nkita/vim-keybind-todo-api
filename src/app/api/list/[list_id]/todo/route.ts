@@ -20,12 +20,12 @@ export const POST = async (request: Request, { params }: { params: any }) => {
      * 認証機能 
      */
     try {
-        // const id = await getUserID()
-        // if (!id) return responseJson(404)
+        const id = await getUserID()
+        if (!id) return responseJson(404)
         let todo: TodoProps
         todo = await request.json()
 
-        // if (!isUUID(params.list_id)) return responseJson(422)
+        if (!isUUID(params.list_id)) return responseJson(422)
 
         const res = {
             id: todo.id,
@@ -35,8 +35,7 @@ export const POST = async (request: Request, { params }: { params: any }) => {
             project: todo.project ?? "",
             context: todo.context ?? "",
             todo_list_id: params.list_id,
-            // user_id: id
-            user_id: "1"
+            user_id: id
         }
         await upsert(res)
         return responseJson(200, res)
