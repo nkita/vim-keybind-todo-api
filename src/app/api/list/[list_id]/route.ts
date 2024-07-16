@@ -10,7 +10,7 @@ export const GET = async (request: Request, { params }: { params: any }) => {
 
     if (!isUUID(params.list_id)) return responseJson(422)
 
-    const data = await select({ id: params.list_id, user_id: user_id, isArchived: false })
+    const data = await select({ id: params.list_id, user_id: user_id, })
 
     return responseJson(200, data)
 }

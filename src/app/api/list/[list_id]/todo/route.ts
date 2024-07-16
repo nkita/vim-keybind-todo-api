@@ -1,11 +1,19 @@
 import { responseJson } from '@/lib/response'
 import { randomUUID } from 'crypto';
 import { getUserID } from '@/lib/session';
-import { upsert } from '@/db/todo';
+import { upsert, select } from '@/db/todo';
 import { ListProps, TodoProps } from '@/type';
 import { isUUID } from '@/lib/util';
 
-export const GET = async () => responseJson(404)
+export const GET = async (request: Request, { params }: { params: any }) => {
+    const user_id = await getUserID()
+    if (!user_id) return responseJson(404)
+
+    if (!isUUID(params.list_id)) return responseJson(422)
+
+    const data = await select({ todo_list_id: params.list_id, user_id: user_id })
+    return responseJson(200, data)
+}
 
 export const POST = async (request: Request, { params }: { params: any }) => {
     /**
