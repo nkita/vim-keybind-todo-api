@@ -11,8 +11,21 @@ export const GET = async (request: Request, { params }: { params: any }) => {
 
     if (!isUUID(params.list_id)) return responseJson(422)
 
-    const data = await select({ todo_list_id: params.list_id, user_id: user_id })
-    return responseJson(200, data)
+    const data = await select({ todo_list_id: params.list_id, user_id: user_id, isArchived: false })
+    const res = data.map(d => {
+        return {
+            id: d.id,
+            priority: d.priority ?? "",
+            creationDate: d.creationDate ?? "",
+            completionDate: d.completedAt ?? null,
+            text: d.text ?? "",
+            project: d.project ?? "",
+            context: d.context ?? "",
+            detail: d.detail ?? "",
+            is_complete: d.is_complete ?? false
+        }
+    })
+    return responseJson(200, res)
 }
 
 export const POST = async (request: Request, { params }: { params: any }) => {
@@ -22,23 +35,28 @@ export const POST = async (request: Request, { params }: { params: any }) => {
     try {
         const id = await getUserID()
         if (!id) return responseJson(404)
-        let todo: TodoProps
-        todo = await request.json()
+        const todos: TodoProps[] = await request.json()
 
         if (!isUUID(params.list_id)) return responseJson(422)
-
-        const res = {
-            id: todo.id,
-            created_at: todo.creationDate,
-            text: todo.text ?? "",
-            detail: todo.detail ?? "",
-            project: todo.project ?? "",
-            context: todo.context ?? "",
-            todo_list_id: params.list_id,
-            user_id: id
-        }
-        await upsert(res)
-        return responseJson(200, res)
+        const result = await Promise.all(todos.map(todo => {
+            const res = {
+                id: todo.id,
+                created_at: todo.creationDate,
+                text: todo.text ?? "",
+                detail: todo.detail ?? "",
+                project: todo.project ?? "",
+                context: todo.context ?? "",
+                todo_list_id: params.list_id,
+                isArchived: todo.isArchived ?? false,
+                is_complete: todo.is_complete,
+                user_id: id
+            }
+            return upsert(res)
+        })).catch(e => {
+            console.error(e)
+            return responseJson(500, e)
+        })
+        return responseJson(200)
     } catch (e) {
         console.error(e)
         return responseJson(500, "System error")
