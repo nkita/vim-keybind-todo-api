@@ -1,7 +1,7 @@
 import prisma, { Todo } from "@/db/prisma";
 import { TodoProps } from "@/type";
 
-export const select = async (where: any) => await prisma.todo.findMany({ where: where })
+export const select = async (where: any) => await prisma.todo.findMany({ where: where, orderBy: { sort: "asc" } })
 
 /**
  * TodoList更新

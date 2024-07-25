@@ -42,4 +42,5 @@ model Todo {
   todo_list    TodoList? @relation(fields: [todo_list_id], references: [id])
   todo_list_id String?
   isArchived   Boolean   @default(false)
+  sort         BigInt?
 }
