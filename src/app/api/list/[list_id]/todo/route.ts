@@ -13,6 +13,7 @@ export const GET = async (request: Request, { params }: { params: any }) => {
 
     const data = await select({ todo_list_id: params.list_id, user_id: user_id, isArchived: false })
     const res = data.map(d => {
+        console.log(d)
         return {
             id: d.id,
             priority: d.priority ?? "",
@@ -22,7 +23,8 @@ export const GET = async (request: Request, { params }: { params: any }) => {
             project: d.project ?? "",
             context: d.context ?? "",
             detail: d.detail ?? "",
-            is_complete: d.is_complete ?? false
+            is_complete: d.is_complete ?? false,
+            sort: d.sort ?? null
         }
     })
     return responseJson(200, res)
@@ -49,6 +51,7 @@ export const POST = async (request: Request, { params }: { params: any }) => {
                 todo_list_id: params.list_id,
                 isArchived: todo.isArchived ?? false,
                 is_complete: todo.is_complete,
+                sort: todo.sort,
                 user_id: id
             }
             return upsert(res)
