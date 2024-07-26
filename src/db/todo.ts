@@ -22,7 +22,8 @@ export const upsert = async ({
     context,
     user_id,
     todo_list_id,
-    isArchived
+    isArchived,
+    sort
 }: TodoDBProps) => await prisma.todo.upsert({
     where: {
         id: id,
@@ -41,6 +42,7 @@ export const upsert = async ({
         context: context ?? "",
         todo_list_id: todo_list_id,
         user_id: user_id,
+        sort: sort ?? null
     },
     update: {
         updated_at: new Date(),
@@ -51,6 +53,7 @@ export const upsert = async ({
         project: project ?? "",
         context: context ?? "",
         completedAt: completionDate ? new Date(completionDate) : null,  // completionDateをDate型に変換
-        isArchived: isArchived ?? false
+        isArchived: isArchived ?? false,
+        sort: sort ?? null
     }
 })
