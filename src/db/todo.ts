@@ -35,7 +35,7 @@ export const upsert = async ({
         priority: priority,
         updated_at: new Date(),
         creationDate: creationDate ?? new Date(),  // created_atをDate型に変換
-        completedAt: null,  // created_atをDate型に変換
+        completedAt: completionDate ? new Date(completionDate) : undefined,  // completionDateをDate型に変換
         text: text,
         detail: detail ?? "",
         project: project ?? "",
@@ -52,7 +52,7 @@ export const upsert = async ({
         detail: detail ?? "",
         project: project ?? "",
         context: context ?? "",
-        completedAt: completionDate ? new Date(completionDate) : null,  // completionDateをDate型に変換
+        completedAt: completionDate ? new Date(completionDate) : undefined,  // completionDateをDate型に変換
         isArchived: isArchived ?? false,
         sort: sort ?? null
     }

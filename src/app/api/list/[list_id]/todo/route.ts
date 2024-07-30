@@ -44,6 +44,7 @@ export const POST = async (request: Request, { params }: { params: any }) => {
             const res = {
                 id: todo.id,
                 created_at: todo.creationDate,
+                completionDate: todo.completionDate ?? undefined,
                 text: todo.text ?? "",
                 detail: todo.detail ?? "",
                 project: todo.project ?? "",
