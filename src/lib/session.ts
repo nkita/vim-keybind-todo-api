@@ -8,6 +8,7 @@ export const getUserID = async () => {
         }).then(res => res.json())
         return user.sub
     } catch (e) {
+        console.error(e)
         return undefined
     }
 }
