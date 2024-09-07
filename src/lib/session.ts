@@ -6,7 +6,6 @@ export const getUserID = async () => {
         const user = await fetch(process.env.AUTH0_ISSUER_BASE_URL + "/userinfo", {
             headers: { "Authorization": token }
         }).then(res => res.json())
-        console.log(token, user)
         return user.sub
     } catch (e) {
         console.error(e)
