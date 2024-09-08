@@ -13,7 +13,6 @@ export const GET = async (request: Request, { params }: { params: any }) => {
 
     const data = await select({ todo_list_id: params.list_id, user_id: user_id, isArchived: false })
     const res = data.map(d => {
-        console.log(d)
         return {
             id: d.id,
             priority: d.priority ?? "",
