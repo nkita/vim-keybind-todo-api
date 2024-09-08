@@ -10,7 +10,12 @@ export const GET = async () => {
 
     const data = await select({ user_id: id })
 
-    return responseJson(200, data.map(d => { id: d.id }))
+    return responseJson(200, data.map(d => {
+        return {
+            id: d.id,
+            name: d.name
+        }
+    }))
 }
 
 export const POST = async (request: Request) => {
