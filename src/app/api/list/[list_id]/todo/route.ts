@@ -5,41 +5,74 @@ import { upsert, select } from '@/db/todo';
 import { ListProps, TodoProps } from '@/type';
 import { isUUID } from '@/lib/util';
 import { sortBy } from "lodash";
+import { useSearchParams } from 'next/navigation';
+import { type NextRequest } from 'next/server'
 
-export const GET = async (request: Request, { params }: { params: any }) => {
-    // 取得可能なtodo数
-    const completionTaskLimit = 20
+export const GET = async (request: NextRequest, { params }: { params: any }) => {
+    let completionTask: any[] = []
+    let progressTask: any[] = []
+    let data: any[] = []
     const user_id = await getUserID()
     if (!user_id) return responseJson(404)
 
     if (!isUUID(params.list_id)) return responseJson(422)
 
-    const progressTask = await select(
-        {
-            where: {
-                todo_list_id: params.list_id,
-                user_id: user_id,
-                isArchived: false,
-                is_complete: false
-            },
-        }
-    )
+    const searchParams = request.nextUrl.searchParams
 
-    const completionTask = await select(
-        {
-            where: {
-                todo_list_id: params.list_id,
-                user_id: user_id,
-                isArchived: false,
-                is_complete: true,
-                completedAt: { not: null }
-            },
-            take: 5,
-            // take: completionTaskLimit,
-            orderBy: { completedAt: "desc" }
-        }
-    )
-    const data = sortBy([...progressTask, ...completionTask], "sort")
+    const completionOnly = searchParams.get('completionOnly') === "true"
+    if (completionOnly) {
+        const _page = searchParams.get('page')
+        let page = _page ? parseInt(_page, 10) : 0
+        page = page > 0 ? page : 0
+        const _limit = searchParams.get('limit')
+        let limit = _limit ? parseInt(_limit, 10) : 25
+        limit = limit > 0 ? limit : 25
+
+        completionTask = await select(
+            {
+                where: {
+                    todo_list_id: params.list_id,
+                    user_id: user_id,
+                    isArchived: false,
+                    is_complete: true,
+                    completedAt: { not: null }
+                },
+                skip: page * limit,
+                take: limit,
+                orderBy: { completedAt: "desc" }
+            }
+        )
+        data = completionTask
+
+    } else {
+        const completionTaskLimit = 20
+        // 取得可能なtodo数
+        completionTask = await select(
+            {
+                where: {
+                    todo_list_id: params.list_id,
+                    user_id: user_id,
+                    isArchived: false,
+                    is_complete: true,
+                    completedAt: { not: null }
+                },
+                take: completionTaskLimit,
+                orderBy: { completedAt: "desc" }
+            }
+        )
+        progressTask = await select(
+            {
+                where: {
+                    todo_list_id: params.list_id,
+                    user_id: user_id,
+                    isArchived: false,
+                    is_complete: false
+                },
+            }
+        )
+        data = sortBy([...progressTask, ...completionTask], "sort")
+    }
+
     const res = data.map(d => {
         return {
             id: d.id,

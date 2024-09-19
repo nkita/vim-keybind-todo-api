@@ -3,6 +3,7 @@ import { TodoProps } from "@/type";
 
 export const select = async (options: any) => await prisma.todo.findMany({
     ...options,
+    orderBy: { sort: "asc" }
 })
 
 /**
