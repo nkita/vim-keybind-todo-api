@@ -4,14 +4,42 @@ import { getUserID } from '@/lib/session';
 import { upsert, select } from '@/db/todo';
 import { ListProps, TodoProps } from '@/type';
 import { isUUID } from '@/lib/util';
+import { sortBy } from "lodash";
 
 export const GET = async (request: Request, { params }: { params: any }) => {
+    // 取得可能なtodo数
+    const completionTaskLimit = 20
     const user_id = await getUserID()
     if (!user_id) return responseJson(404)
 
     if (!isUUID(params.list_id)) return responseJson(422)
 
-    const data = await select({ todo_list_id: params.list_id, user_id: user_id, isArchived: false })
+    const progressTask = await select(
+        {
+            where: {
+                todo_list_id: params.list_id,
+                user_id: user_id,
+                isArchived: false,
+                is_complete: false
+            },
+        }
+    )
+
+    const completionTask = await select(
+        {
+            where: {
+                todo_list_id: params.list_id,
+                user_id: user_id,
+                isArchived: false,
+                is_complete: true,
+                completedAt: { not: null }
+            },
+            take: 5,
+            // take: completionTaskLimit,
+            orderBy: { completedAt: "desc" }
+        }
+    )
+    const data = sortBy([...progressTask, ...completionTask], "sort")
     const res = data.map(d => {
         return {
             id: d.id,
