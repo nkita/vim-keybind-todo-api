@@ -7,6 +7,7 @@ import { isUUID } from '@/lib/util';
 import { sortBy } from "lodash";
 import { useSearchParams } from 'next/navigation';
 import { type NextRequest } from 'next/server'
+import prisma, { Prisma } from '@/db/prisma';
 
 export const GET = async (request: NextRequest, { params }: { params: any }) => {
     let completionTask: any[] = []
@@ -28,49 +29,57 @@ export const GET = async (request: NextRequest, { params }: { params: any }) => 
         let limit = _limit ? parseInt(_limit, 10) : 25
         limit = limit > 0 ? limit : 25
 
-        completionTask = await select(
-            {
-                where: {
-                    todo_list_id: params.list_id,
-                    user_id: user_id,
-                    isArchived: false,
-                    is_complete: true,
-                    completedAt: { not: null }
-                },
-                skip: page * limit,
-                take: limit,
-                orderBy: { completedAt: "desc" }
-            }
-        )
-        data = completionTask
+        const result = await prisma.$queryRaw<TodoProps[]>`
+        SELECT
+            *
+        FROM
+            "Todo"
+        WHERE
+            "todo_list_id" = ${params.list_id}
+            AND "user_id" = ${user_id}
+            AND "isArchived" = false
+            AND "is_complete" = true
+            AND "completedAt" IS NOT NULL
+        ORDER BY
+            "completedAt" DESC
+        LIMIT ${limit} OFFSET ${limit * page}
+                `
+        if (result) data = result
 
     } else {
-        const completionTaskLimit = 20
         // 取得可能なtodo数
-        completionTask = await select(
-            {
-                where: {
-                    todo_list_id: params.list_id,
-                    user_id: user_id,
-                    isArchived: false,
-                    is_complete: true,
-                    completedAt: { not: null }
-                },
-                take: completionTaskLimit,
-                orderBy: { completedAt: "desc" }
-            }
-        )
-        progressTask = await select(
-            {
-                where: {
-                    todo_list_id: params.list_id,
-                    user_id: user_id,
-                    isArchived: false,
-                    is_complete: false
-                },
-            }
-        )
-        data = sortBy([...progressTask, ...completionTask], "sort")
+        const completionTaskLimit = 20
+
+        const result = await prisma.$queryRaw<TodoProps[]>`
+    (
+        SELECT
+            *
+        FROM
+            "Todo"
+        WHERE
+            "todo_list_id" = ${params.list_id}
+            AND "user_id" = ${user_id}
+            AND "isArchived" = false
+            AND "is_complete" = true
+            AND "completedAt" IS NOT NULL
+        ORDER BY
+            "completedAt" DESC
+        LIMIT ${completionTaskLimit}
+    )
+    UNION ALL
+    (
+        SELECT
+            *
+        FROM
+            "Todo"
+        WHERE
+            "todo_list_id" = ${params.list_id}
+            AND "user_id" = ${user_id}
+            AND "isArchived" = false
+            AND "is_complete" = false
+    )
+    `
+        data = sortBy(result, "sort")
     }
 
     const res = data.map(d => {
